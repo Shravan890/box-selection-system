@@ -1,0 +1,10 @@
+{% extends "orders/base.html" %}
+{% block title %}Order #{{ order.pk }} | Boxwise{% endblock %}
+{% block content %}
+<section class="hero"><div class="eyebrow">Packing recommendation</div><h1>Order #{{ order.pk }}</h1><p>Created {{ order.created_at|date:"F j, Y · H:i" }}</p></section>
+<section class="card"><h2>Items to pack</h2><ul class="item-list">{% for line in order_items %}{% with item=line.item %}<li><strong>{{ item.product.sku }}</strong> — {{ item.product.name }} × {{ item.quantity }} <span class="muted">(each item: {{ item.product.length }} × {{ item.product.width }} × {{ item.product.height }} cm, {{ item.product.weight }} kg · this line weighs {{ line.line_weight|floatformat:2 }} kg total)</span></li>{% endwith %}{% endfor %}</ul>
+  <p><strong>Order total:</strong> {{ total_units }} item{{ total_units|pluralize }} · {{ total_weight|floatformat:2 }} kg combined product weight</p>
+  <div class="result{% if not order.recommended_box %} none{% endif %}"><strong>{% if order.recommended_box %}Recommended box: {{ order.recommended_box.name }}{% else %}No suitable box found{% endif %}</strong><br>{{ order.recommendation_note }}
+  {% if order.recommended_box %}<br><span class="muted">Internal dimensions {{ order.recommended_box.length }} × {{ order.recommended_box.width }} × {{ order.recommended_box.height }} cm · capacity {{ order.recommended_box.max_weight }} kg · cost {{ order.recommended_box.cost }}</span>{% endif %}</div>
+  <a class="button" href="{% url 'home' %}">Create another order</a></section>
+{% endblock %}

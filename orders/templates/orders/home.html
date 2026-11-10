@@ -1,0 +1,14 @@
+{% extends "orders/base.html" %}
+{% block title %}Box recommendation | Boxwise{% endblock %}
+{% block content %}
+<section class="hero"><div class="eyebrow">Packing assistant</div><h1>Find the right box for an order</h1><p>Enter product SKUs and quantities. Boxwise checks weight and 3D fit, including rotated products, then recommends the lowest-cost suitable box.</p>
+  <div class="stats"><div class="stat"><strong>{{ product_count }}</strong><span class="muted">products</span></div><div class="stat"><strong>{{ box_count }}</strong><span class="muted">box sizes</span></div></div>
+</section>
+<div class="layout"><section class="card"><h2>New order</h2>
+  {% if form.items.errors %}<ul class="errors">{% for error in form.items.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+  <form method="post">{% csrf_token %}<label for="id_items">{{ form.items.label }}</label>{{ form.items }}<p class="help">{{ form.items.help_text }} Add products and box sizes in <a href="/admin/">Django admin</a>.</p><button type="submit">Recommend a box</button></form>
+</section><section class="card"><h2>Recent orders</h2>
+  {% for order in orders %}<a class="order" href="{% url 'order_detail' order.pk %}"><span>Order #{{ order.pk }}<br><span class="muted">{{ order.created_at|date:"M j, Y · H:i" }}</span></span><span class="badge">{% if order.recommended_box %}{{ order.recommended_box.name }}{% else %}No fit{% endif %} →</span></a>
+  {% empty %}<p>No orders yet. Create one to get a recommendation.</p>{% endfor %}
+</section></div>
+{% endblock %}
