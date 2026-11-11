@@ -24,11 +24,11 @@ class Command(BaseCommand):
             ("Large", 48, 36, 30, 15, 3.40),
         ]
         for sku, name, length, width, height, weight in products:
-            Product.objects.update_or_create(sku=sku, defaults={
+            Product.objects.get_or_create(sku=sku, defaults={
                 "name": name, "length": length, "width": width, "height": height, "weight": weight,
             })
         for name, length, width, height, max_weight, cost in boxes:
-            Box.objects.update_or_create(name=name, defaults={
+            Box.objects.get_or_create(name=name, defaults={
                 "length": length, "width": width, "height": height,
                 "max_weight": max_weight, "cost": cost,
             })

@@ -1,0 +1,11 @@
+[project]
+name = "box-selection-system"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "Django>=5.2,<6.0",
+    "psycopg[binary]>=3.2,<4.0",
+]
+
+[tool.vercel.scripts]
+build = "python manage.py migrate --noinput && python manage.py seed_demo"

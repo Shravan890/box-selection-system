@@ -4,7 +4,7 @@ A small Django application that helps a warehouse choose a shipping box for an o
 
 ## Run locally
 
-Use Python 3.10 or newer. From this folder:
+Use Python 3.11 or newer. From this folder:
 
 ```bash
 python -m venv .venv
@@ -58,3 +58,9 @@ python manage.py test
 ```
 
 See `TEST_OUTPUT.md` for the test run included with this submission.
+
+## Deploy on Vercel
+
+The project uses SQLite locally. For Vercel, connect a PostgreSQL database (for example, Neon from the Vercel Storage/Marketplace page). Vercel's serverless filesystem is not persistent, so a local SQLite file cannot safely store deployed orders. The app uses the `DATABASE_URL` environment variable when it is present and falls back to SQLite for local development.
+
+In Vercel, connect the database to this project so `DATABASE_URL` is available, and add a private `DJANGO_SECRET_KEY` environment variable. The Vercel build script in `pyproject.toml` applies migrations and inserts any missing demo catalog records. Push the updated project to GitHub to trigger a deployment.
